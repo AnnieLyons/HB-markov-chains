@@ -41,20 +41,62 @@ def make_chains(text_string):
 
        
     """
-    file_to_use = open_and_read_file(text_string)
-    words = file_to_use.split()
+
+    words = text_string.split()
     # print(words)
+
+    chains = {} 
+    # next_word = []
 
     for i in range(len(words) -2):
         pairs = (words[i], words[i + 1])
-        print(pairs)
-        # print(words[i], words[i + 1], words[i + 2])
+        if pairs in chains: 
+           chains = [pairs, words[i + 2]]
 
-    chains = {}
+        else:
+            chains[pairs] = words[i + 2]
+
+        print(chains)
+
+        # next_word.append(words[i + 2])
+        # chains[pairs] = next_word
+        # print(words[i + 2])
+
         
-    chains[pairs] = next_word
-    next_word = []
+
+        #     print(word)
+
+
+        # print(pairs)
+
+    # for word in words:
+    #     next_word.append(word)
+    #     print(next_word)    
+
+        # print(words[i], words[i + 1], words[i + 2])
     
+    # chains = dict
+    # pairs = key
+    # next_word = value  
+    
+    # next_word = [] 
+
+    # chains[pairs] = next_word
+
+    # for word in range(len(words) -2):
+    #     chains[word] = chains.get(word, 0) + 2
+
+    # for word in range(len(words) - 2):
+    #     if word in chains:
+    #         next_word.append(word)
+    #         chains[pairs] = next_word
+    #         # next_word[word] += 2
+        # else:
+        #     next_word[word] = 1
+    
+    # print(next_word) 
+#     next_word.append(word[0] + 2)
+
     print(chains)
     # print(make_chains)    
 
