@@ -11,6 +11,7 @@ def open_and_read_file(file_path):
     """
     file = open(file_path)
     text = file.read()
+    file.close()
    
     return text
 # open_and_read_file("green-eggs.txt")
@@ -41,85 +42,48 @@ def make_chains(text_string):
 
        
     """
-
+    chains = {} 
+    
     words = text_string.split()
     # print(words)
 
-    chains = {} 
+    # To set a stop point, append None to the end of our word list... (research this)
+    words.append(None)
+
+    print(words)
     # next_word = []
 
     for i in range(len(words) -2):
-        pairs = (words[i], words[i + 1])
-        if pairs in chains: 
-           chains = [pairs, words[i + 2]]
+        key = (words[i], words[i + 1])
+        value = words[i + 2]
 
-        else:
-            chains[pairs] = words[i + 2]
+        if key not in chains: 
+           chains[key] = []
 
-        print(chains)
+    # or we could replace the last three lines with:
+        #    chains.setdefault(key, []).append(value)
+        chains[key].append(value)
+    # print(chains)
+    return chains
 
-        # next_word.append(words[i + 2])
-        # chains[pairs] = next_word
-        # print(words[i + 2])
+    # To set a stop point, append None to the end of our word list.
 
-        
-
-        #     print(word)
-
-
-        # print(pairs)
-
-    # for word in words:
-    #     next_word.append(word)
-    #     print(next_word)    
-
-        # print(words[i], words[i + 1], words[i + 2])
-    
-    # chains = dict
-    # pairs = key
-    # next_word = value  
-    
-    # next_word = [] 
-
-    # chains[pairs] = next_word
-
-    # for word in range(len(words) -2):
-    #     chains[word] = chains.get(word, 0) + 2
-
-    # for word in range(len(words) - 2):
-    #     if word in chains:
-    #         next_word.append(word)
-    #         chains[pairs] = next_word
-    #         # next_word[word] += 2
-        # else:
-        #     next_word[word] = 1
-    
-    # print(next_word) 
-#     next_word.append(word[0] + 2)
-
-    print(chains)
-    # print(make_chains)    
-
-        # words[word] = words.get(word, 0) + 1
- 
-    # key = ()
-    # value = []
-    # print(key)
-    # print(value)
-    # for word in file_to_use:
-    #     chains[word] = chains.get(word, 0) + 1
-
-
-    # return chains
-
-make_chains("green-eggs.txt")
 
 def make_text(chains):
     """Return text from chains."""
 
-    words = []
+    key = choice(list(chains.keys()))
+    words = [key[0], key[1]]
+    word = choice(chains[key])
 
-    # your code goes here
+    # Keep looping until value of None is reached 
+    # (which would mean it was the end of the original text)
+    # For long texts such as a book, this may mean run for a while.
+
+    while word is not None:
+        key = (key[1], word)
+        words.append(word)
+        word = choice(chains[key])
 
     return " ".join(words)
 
