@@ -1,5 +1,5 @@
 """Generate Markov text from text files."""
-
+import sys
 from random import choice
 
 
@@ -45,50 +45,56 @@ def make_chains(text_string):
     chains = {} 
     
     words = text_string.split()
-    # print(words)
 
-    # To set a stop point, append None to the end of our word list... (research this)
+    # To set a stop point, append None to the end of our word list.
     words.append(None)
 
     print(words)
-    # next_word = []
-
-    for i in range(len(words) -2):
-        key = (words[i], words[i + 1])
-        value = words[i + 2]
+    
+    for word in range(len(words) - 2):
+        key = (words[word], words[word + 1])
+        value = words[word + 2]
 
         if key not in chains: 
            chains[key] = []
 
-    # or we could replace the last three lines with:
-        #    chains.setdefault(key, []).append(value)
         chains[key].append(value)
-    # print(chains)
+    
     return chains
-
-    # To set a stop point, append None to the end of our word list.
 
 
 def make_text(chains):
     """Return text from chains."""
 
-    key = choice(list(chains.keys()))
-    words = [key[0], key[1]]
-    word = choice(chains[key])
+    # To check a value ends in punctuation.
+    punct = ([".", "?", "!"])
 
-    # Keep looping until value of None is reached 
-    # (which would mean it was the end of the original text)
-    # For long texts such as a book, this may mean run for a while.
+    keys = list(chains.keys())
+
+    key = choice(keys)
+
+    # Check if the first character of the first item in the key is uppercase
+    while not key[0][0].isupper():
+        key = choice(keys)
+
+    words = list(key)
+    word = choice(list(chains[key]))
 
     while word is not None:
-        key = (key[1], word)
+        key = key[1:] + (word,)
+
         words.append(word)
+
+        # If word ends in punctuation, break out of the loop
+        if word[-1] in punct:
+            break
+
         word = choice(chains[key])
 
     return " ".join(words)
 
 
-input_path = "green-eggs.txt"
+input_path = sys.argv[1]
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
